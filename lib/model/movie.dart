@@ -1,64 +1,50 @@
-import 'package:flutter/cupertino.dart';
+import 'package:tmdb/model/generes.dart';
 
 class Movie {
-  String name;
   String rating;
-  String age;
-  AssetImage imgURL;
+  String overview;
+  String releaseYear;
+  String bgURL;
+  String posterURL;
+  String title;
+  List<Genre> category;
 
   Movie({
-    this.name,
     this.rating,
-    this.age,
-    this.imgURL,
+    this.overview,
+    this.releaseYear,
+    this.bgURL,
+    this.posterURL,
+    this.title,
+    this.category,
   });
 
   Movie.fromMap(Map<String, dynamic> map) {
-    this.name = map['name'];
-    this.rating = map['rating'];
-    this.age = map['age'];
-    this.imgURL = map['imgURL'];
+    this.rating = map['vote_average'].toString();
+    this.overview = map['overview'];
+    this.releaseYear = map['release_date'].toString().substring(0, 4);
+    this.bgURL = map['backdrop_path'];
+    this.posterURL = map['poster_path'];
+    this.title = map['title'];
+    this.category = List<Genre>();
+    for (var id in map['genre_ids']) {
+      for (var cat in genre) {
+        if (cat.id == id) {
+          this.category.add(cat);
+        }
+      }
+    }
   }
 
   toJson() {
     return {
-      "name": this.name,
       "rating": this.rating,
-      "age": this.age,
-      "imgURL": this.imgURL,
+      "overview": this.overview,
+      "releaseDate": this.releaseYear,
+      "bgURL": this.bgURL,
+      "posterURL": this.posterURL,
+      "title": this.title,
+      "category": this.category,
     };
   }
 }
-
-List<Movie> movieList = [
-  Movie(
-    name: "Joker",
-    age: "15+",
-    rating: "8.6",
-    imgURL: AssetImage('assets/img/joker1.jpg'),
-  ),
-  Movie(
-    name: "Joker 2.O",
-    age: "15+",
-    rating: "7.6",
-    imgURL: AssetImage('assets/img/joker2.jpg'),
-  ),
-  Movie(
-    name: "Joker 3.O",
-    age: "15+",
-    rating: "3.4",
-    imgURL: AssetImage('assets/img/joker3.jpg'),
-  ),
-  Movie(
-    name: "Joker 4.O",
-    age: "15+",
-    rating: "9.6",
-    imgURL: AssetImage('assets/img/joker4.jpg'),
-  ),
-  Movie(
-    name: "Joker 5.O",
-    age: "15+",
-    rating: "10.0",
-    imgURL: AssetImage('assets/img/bg.jpg'),
-  ),
-];

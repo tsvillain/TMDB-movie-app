@@ -26,6 +26,8 @@ dependencies:
   carousel_slider: ^2.3.1
   cupertino_icons: ^1.0.1
   getwidget: ^1.2.4
+  http: ^0.12.2
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:
@@ -46,7 +48,6 @@ flutter:
     - assets/img/joker2.jpg
     - assets/img/joker3.jpg
     - assets/img/joker4.jpg
-
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

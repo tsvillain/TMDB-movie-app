@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:http/http.dart' as http;
+import 'package:tmdb/constants.dart';
 import 'package:tmdb/model/movie.dart';
+import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,6 +14,26 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool isLoading = true;
+
+  List<Movie> _movies = List<Movie>();
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  void getData() async {
+    http.Response response = await http.get(trending);
+    var data = jsonDecode(response.body)['results'];
+    for (var movie in data) {
+      _movies.add(Movie.fromMap(movie));
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   int index = 0;
   @override
   Widget build(BuildContext context) {
@@ -27,168 +51,184 @@ class _HomeState extends State<Home> {
         elevation: 0.0,
       ),
       extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          Container(
-            height: size.height,
-            width: size.width,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: movieList[index].imgURL,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Container(
-            height: size.height,
-            width: size.width,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: FractionalOffset.bottomCenter,
-                  end: FractionalOffset.topCenter,
-                  colors: [
-                    Colors.black87,
-                    Colors.black26,
-                  ],
-                  stops: [
-                    0.4,
-                    1.0
-                  ]),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Stack(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                    width: size.width,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                color: Colors.black87,
-                              ),
-                              child: Text(
-                                "POPULAR WITH FRIENDS",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                color: Colors.black87,
-                              ),
-                              child: Text(
-                                "${movieList[index].age}",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                color: Colors.amber,
-                              ),
-                              child: Text(
-                                "${movieList[index].rating}",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          '''2019 * Crime, Drama, Thriller -- Dataset, Dolby Digital''',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                Container(
+                  height: size.height,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("$bgURL${_movies[index].bgURL}"),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
                 Container(
-                  width: size.width / 2,
-                  height: 2,
+                  height: size.height,
+                  width: size.width,
                   decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(100.0)),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    width: size.width,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: GFButton(
-                            padding: EdgeInsets.all(10),
-                            textStyle: TextStyle(fontWeight: FontWeight.bold),
-                            shape: GFButtonShape.standard,
-                            onPressed: () {},
-                            text: "BUY TICKET",
-                            color: Colors.red,
-                          ),
-                        ),
-                        Expanded(
-                          child: CarouselSlider.builder(
-                            options: CarouselOptions(
-                                autoPlay: false,
-                                viewportFraction: 0.5,
-                                height: size.height,
-                                enlargeCenterPage: true,
-                                onPageChanged: (i, _) {
-                                  setState(() {
-                                    index = i;
-                                  });
-                                }),
-                            itemCount: movieList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.amber,
-                                  image: DecorationImage(
-                                    image: movieList[index].imgURL,
-                                    fit: BoxFit.cover,
+                    gradient: LinearGradient(
+                        begin: FractionalOffset.bottomCenter,
+                        end: FractionalOffset.topCenter,
+                        colors: [
+                          Colors.black87,
+                          Colors.black26,
+                        ],
+                        stops: [
+                          0.4,
+                          1.0
+                        ]),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+                          width: size.width,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      color: Colors.black87,
+                                    ),
+                                    child: Text(
+                                      "TRENDING",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              );
-                            },
+                                  Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      color: Colors.black87,
+                                    ),
+                                    child: Text(
+                                      "${_movies[index].releaseYear}",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      color: Colors.amber,
+                                    ),
+                                    child: Text(
+                                      "${_movies[index].rating}",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: _movies[index]
+                                    .category
+                                    .map((e) => Text(
+                                          e.category,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      Container(
+                        width: size.width / 2,
+                        height: 2,
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(100.0)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          width: size.width,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: GFButton(
+                                  padding: EdgeInsets.all(10),
+                                  textStyle:
+                                      TextStyle(fontWeight: FontWeight.bold),
+                                  shape: GFButtonShape.standard,
+                                  onPressed: () {},
+                                  text: "BUY TICKET",
+                                  color: Colors.red,
+                                ),
+                              ),
+                              Expanded(
+                                child: CarouselSlider.builder(
+                                  options: CarouselOptions(
+                                      autoPlay: false,
+                                      viewportFraction: 0.5,
+                                      height: size.height,
+                                      enlargeCenterPage: true,
+                                      onPageChanged: (i, _) {
+                                        setState(() {
+                                          index = i;
+                                        });
+                                      }),
+                                  itemCount: _movies.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Container(
+                                      margin: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              "$posterURL${_movies[index].posterURL}"),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
