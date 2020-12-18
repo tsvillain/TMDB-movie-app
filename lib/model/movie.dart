@@ -7,9 +7,11 @@ class Movie {
   String bgURL;
   String posterURL;
   String title;
+  String id;
   List<Genre> category;
 
   Movie({
+    this.id,
     this.rating,
     this.overview,
     this.releaseYear,
@@ -20,6 +22,7 @@ class Movie {
   });
 
   Movie.fromMap(Map<String, dynamic> map) {
+    this.id = map["id"].toString();
     this.rating = map['vote_average'].toString();
     this.overview = map['overview'];
     this.releaseYear = map['release_date'].toString().substring(0, 4);
@@ -38,6 +41,7 @@ class Movie {
 
   toJson() {
     return {
+      "id": this.id,
       "rating": this.rating,
       "overview": this.overview,
       "releaseDate": this.releaseYear,

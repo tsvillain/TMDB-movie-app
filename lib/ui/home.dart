@@ -5,8 +5,11 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:tmdb/constants.dart';
+import 'package:tmdb/model/detailedMovie.dart';
 import 'package:tmdb/model/movie.dart';
 import 'package:intl/intl.dart';
+
+import 'movie_desc.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -24,7 +27,7 @@ class _HomeState extends State<Home> {
   }
 
   void getData() async {
-    http.Response response = await http.get(trending);
+    http.Response response = await http.get(trendingEndPoint);
     var data = jsonDecode(response.body)['results'];
     for (var movie in data) {
       _movies.add(Movie.fromMap(movie));
@@ -185,8 +188,22 @@ class _HomeState extends State<Home> {
                                   textStyle:
                                       TextStyle(fontWeight: FontWeight.bold),
                                   shape: GFButtonShape.standard,
-                                  onPressed: () {},
-                                  text: "BUY TICKET",
+                                  onPressed: () async {
+                                    http.Response response = await http.get(
+                                        "$movieEndPoint${_movies[index].id}$apiKey$crewEndPoint");
+                                    var data = jsonDecode(response.body);
+
+                                    DetailedMovie _detailedMovie =
+                                        DetailedMovie.fromMap(data);
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => MovieDescription(
+                                                  movie: _detailedMovie,
+                                                )));
+                                  },
+                                  text: "View More",
                                   color: Colors.red,
                                 ),
                               ),
