@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:tmdb/constants.dart';
 import 'package:tmdb/model/detailedMovie.dart';
 import 'package:tmdb/model/movie.dart';
-import 'package:intl/intl.dart';
+import 'package:tmdb/ui/movie_search.dart';
 
 import 'movie_desc.dart';
 
@@ -47,7 +47,12 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
             icon: Icon(Icons.search_outlined),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => MovieSearch()));
+            },
           )
         ],
         backgroundColor: Colors.transparent,
@@ -203,7 +208,7 @@ class _HomeState extends State<Home> {
                                                   movie: _detailedMovie,
                                                 )));
                                   },
-                                  text: "View More",
+                                  text: "Watch Trailer",
                                   color: Colors.red,
                                 ),
                               ),
