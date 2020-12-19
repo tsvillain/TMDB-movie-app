@@ -2,9 +2,7 @@
 
 TMDB Movie App build in Flutter.
 
-## Description
-
-Features of This App:
+## Features of This App:
 
 - [x] List Trending Movies
 - [x] Check Movie Details
