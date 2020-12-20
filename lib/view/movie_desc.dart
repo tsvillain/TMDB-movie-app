@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tmdb/constants.dart';
-import 'package:tmdb/model/detailedMovie.dart';
+import 'package:tmdb/model/detailedMovieModel.dart';
 
 class MovieDescription extends StatelessWidget {
   final DetailedMovie movie;

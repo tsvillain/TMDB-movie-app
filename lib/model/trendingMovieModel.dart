@@ -1,4 +1,4 @@
-import 'package:tmdb/model/generes.dart';
+import 'package:tmdb/model/generesModel.dart';
 
 class Movie {
   String rating;

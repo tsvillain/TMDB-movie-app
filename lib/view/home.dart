@@ -5,10 +5,9 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:tmdb/constants.dart';
-import 'package:tmdb/model/detailedMovie.dart';
-import 'package:tmdb/model/movie.dart';
+import 'package:tmdb/model/detailedMovieModel.dart';
+import 'package:tmdb/model/trendingMovieModel.dart';
 import 'package:tmdb/view/movie_search.dart';
-
 import 'movie_desc.dart';
 
 class Home extends StatefulWidget {

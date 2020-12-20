@@ -1,5 +1,5 @@
-import 'package:tmdb/model/cast.dart';
-import 'package:tmdb/model/crew.dart';
+import 'package:tmdb/model/castModel.dart';
+import 'package:tmdb/model/crewModel.dart';
 
 class DetailedMovie {
   String id;
