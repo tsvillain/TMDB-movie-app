@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:tmdb/constants.dart';
 import 'package:tmdb/model/detailedMovie.dart';
 import 'package:tmdb/model/movie.dart';
-import 'package:tmdb/ui/movie_search.dart';
+import 'package:tmdb/view/movie_search.dart';
 
 import 'movie_desc.dart';
 
