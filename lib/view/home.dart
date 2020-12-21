@@ -1,19 +1,15 @@
-import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:http/http.dart' as http;
 import 'package:tmdb/constants.dart';
-import 'package:tmdb/controller/trendingMovieController.dart';
-import 'package:tmdb/model/detailedMovieModel.dart';
+import 'package:tmdb/controller/movieController.dart';
 import 'package:tmdb/view/movie_search.dart';
 import 'movie_desc.dart';
 
 class Home extends StatelessWidget {
-  final TrendingMovieController trendingMovieController =
-      Get.put(TrendingMovieController());
+  final MovieController movieController = Get.put(MovieController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +34,7 @@ class Home extends StatelessWidget {
       extendBodyBehindAppBar: true,
       body: Obx(
         () {
-          return trendingMovieController.isLoading.value
+          return movieController.isLoading.value
               ? Center(child: CircularProgressIndicator())
               : Stack(
                   children: [
@@ -48,7 +44,7 @@ class Home extends StatelessWidget {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(
-                              "$bgURL${trendingMovieController.selectedMovie.value.bgURL}"),
+                              "$bgURL${movieController.selectedMovie.value.bgURL}"),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -109,7 +105,7 @@ class Home extends StatelessWidget {
                                           color: Colors.black87,
                                         ),
                                         child: Text(
-                                          "${trendingMovieController.selectedMovie.value.releaseYear}",
+                                          "${movieController.selectedMovie.value.releaseYear}",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -124,7 +120,7 @@ class Home extends StatelessWidget {
                                           color: Colors.amber,
                                         ),
                                         child: Text(
-                                          "${trendingMovieController.selectedMovie.value.rating}",
+                                          "${movieController.selectedMovie.value.rating}",
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
@@ -138,7 +134,7 @@ class Home extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
-                                    children: trendingMovieController
+                                    children: movieController
                                         .selectedMovie.value.category
                                         .map((e) => Text(
                                               e.category,
@@ -175,20 +171,15 @@ class Home extends StatelessWidget {
                                           fontWeight: FontWeight.bold),
                                       shape: GFButtonShape.standard,
                                       onPressed: () async {
-                                        http.Response response = await http.get(
-                                            "$movieEndPoint${trendingMovieController.selectedMovie.value.id}$apiKey$crewEndPoint");
-                                        var data = jsonDecode(response.body);
-
-                                        DetailedMovie _detailedMovie =
-                                            DetailedMovie.fromMap(data);
+                                        movieController.getMovieDetail(
+                                            movieController
+                                                .selectedMovie.value.id);
 
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (_) =>
-                                                    MovieDescription(
-                                                      movie: _detailedMovie,
-                                                    )));
+                                                    MovieDescription()));
                                       },
                                       text: "Watch Trailer",
                                       color: Colors.red,
@@ -202,11 +193,10 @@ class Home extends StatelessWidget {
                                           height: size.height,
                                           enlargeCenterPage: true,
                                           onPageChanged: (i, _) {
-                                            trendingMovieController
-                                                .selectedMovies(i);
+                                            movieController.selectedMovies(i);
                                           }),
-                                      itemCount: trendingMovieController
-                                          .trendingMovies.length,
+                                      itemCount:
+                                          movieController.trendingMovies.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Container(
@@ -215,7 +205,7 @@ class Home extends StatelessWidget {
                                             color: Colors.amber,
                                             image: DecorationImage(
                                               image: NetworkImage(
-                                                  "$posterURL${trendingMovieController.trendingMovies[index].posterURL}"),
+                                                  "$posterURL${movieController.trendingMovies[index].posterURL}"),
                                               fit: BoxFit.cover,
                                             ),
                                             borderRadius:
