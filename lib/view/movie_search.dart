@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-
 class MovieSearch extends StatefulWidget {
   @override
   _MovieSearchState createState() => _MovieSearchState();
