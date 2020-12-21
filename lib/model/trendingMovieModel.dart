@@ -1,6 +1,6 @@
 import 'package:tmdb/model/generesModel.dart';
 
-class Movie {
+class TrendingMovie {
   String rating;
   String overview;
   String releaseYear;
@@ -10,7 +10,7 @@ class Movie {
   String id;
   List<Genre> category;
 
-  Movie({
+  TrendingMovie({
     this.id,
     this.rating,
     this.overview,
@@ -21,7 +21,7 @@ class Movie {
     this.category,
   });
 
-  Movie.fromMap(Map<String, dynamic> map) {
+  TrendingMovie.fromMap(Map<String, dynamic> map) {
     this.id = map["id"].toString();
     this.rating = map['vote_average'].toString();
     this.overview = map['overview'];
