@@ -25,10 +25,12 @@ dependencies:
     sdk: flutter
   carousel_slider: ^2.3.1
   cupertino_icons: ^1.0.1
+  flutter_svg: ^0.19.2+1
   get: ^3.23.1
   getwidget: ^1.2.4
   http: ^0.12.2
   intl: ^0.16.1
+  url_launcher: ^5.7.10
 
 dev_dependencies:
   flutter_test:
