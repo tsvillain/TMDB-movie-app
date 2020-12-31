@@ -9,3 +9,6 @@ final movieEndPoint = 'https://api.themoviedb.org/3/movie/';
 final crewEndPoint = '&append_to_response=credits';
 
 final youtubeSearch = 'https://www.youtube.com/results?search_query=';
+
+final searchMovie =
+    'https://api.themoviedb.org/3/search/movie$apiKey&language=en-US&query=';

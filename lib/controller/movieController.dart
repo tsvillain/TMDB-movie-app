@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 class MovieController extends GetxController {
   var isLoading = true.obs;
   List<TrendingMovie> trendingMovies = List<TrendingMovie>().obs;
+  List<TrendingMovie> searchedMovies = List<TrendingMovie>().obs;
   var movie = DetailedMovie(
     bgURL: null,
     category: null,
@@ -42,6 +43,15 @@ class MovieController extends GetxController {
 
   void selectedMovies(int index) {
     selectedMovie(trendingMovies[index]);
+  }
+
+  void getSearchedMovie(String movieName) async {
+    isLoading(true);
+    var _movies = await APIService.getSearchedMovie(movieName);
+    if (_movies != null) {
+      searchedMovies = _movies;
+    }
+    isLoading(false);
   }
 
   void getTrendingMovies() async {

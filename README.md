@@ -7,8 +7,8 @@ TMDB Movie App build in Flutter.
 - [x] List Trending Movies
 - [x] Check Movie Details
 - [x] API Integration
-- [ ] Open Movie Trailer on YouTube
-- [ ] Search Movies
+- [X] Open Movie Trailer on YouTube
+- [X] Search Movies
 - [ ] Navigation 2.O
 - [X] State Management
 
