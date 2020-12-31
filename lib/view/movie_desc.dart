@@ -174,8 +174,12 @@ class MovieDescription extends StatelessWidget {
                                                       MainAxisSize.max,
                                                   children: [
                                                     CircleAvatar(
-                                                      backgroundImage: NetworkImage(
-                                                          '$posterURL${e.profileURL}'),
+                                                      backgroundImage: e.profileURL ==
+                                                              null
+                                                          ? NetworkImage(
+                                                              'https://randomuser.me/api/portraits/lego/1.jpg')
+                                                          : NetworkImage(
+                                                              '$posterURL${e.profileURL}'),
                                                       radius: 40,
                                                     ),
                                                     SizedBox(height: 10),

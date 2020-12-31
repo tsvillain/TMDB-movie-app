@@ -1,7 +1,9 @@
 import 'package:get/state_manager.dart';
+import 'package:tmdb/constants.dart';
 import 'package:tmdb/model/detailedMovieModel.dart';
 import 'package:tmdb/model/trendingMovieModel.dart';
 import 'package:tmdb/services/apiService.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MovieController extends GetxController {
   var isLoading = true.obs;
@@ -59,5 +61,14 @@ class MovieController extends GetxController {
       movie(_movie);
     }
     isLoading(false);
+  }
+
+  void launchURL(String query) async {
+    final url = '$youtubeSearch$query+offical+trailer'.toLowerCase();
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

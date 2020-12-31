@@ -10,7 +10,7 @@ TMDB Movie App build in Flutter.
 - [ ] Open Movie Trailer on YouTube
 - [ ] Search Movies
 - [ ] Navigation 2.O
-- [ ] State Management
+- [X] State Management
 
 ## Preview
 

@@ -16,6 +16,11 @@ class Home extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        // title: SvgPicture.network(
+        //   'https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg',
+        //   color: Color(0xFF01b4e4),
+        // ),
+        centerTitle: true,
         leading: Icon(Icons.menu),
         actions: [
           IconButton(
@@ -170,16 +175,12 @@ class Home extends StatelessWidget {
                                       textStyle: TextStyle(
                                           fontWeight: FontWeight.bold),
                                       shape: GFButtonShape.standard,
-                                      onPressed: () async {
-                                        movieController.getMovieDetail(
+                                      onPressed: () {
+                                        Get.snackbar(
+                                            'Opeing Trailer on YouTube', '');
+                                        movieController.launchURL(
                                             movieController
-                                                .selectedMovie.value.id);
-
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) =>
-                                                    MovieDescription()));
+                                                .selectedMovie.value.title);
                                       },
                                       text: "Watch Trailer",
                                       color: Colors.red,
@@ -188,28 +189,41 @@ class Home extends StatelessWidget {
                                   Expanded(
                                     child: CarouselSlider.builder(
                                       options: CarouselOptions(
-                                          autoPlay: false,
-                                          viewportFraction: 0.5,
-                                          height: size.height,
-                                          enlargeCenterPage: true,
-                                          onPageChanged: (i, _) {
-                                            movieController.selectedMovies(i);
-                                          }),
+                                        autoPlay: false,
+                                        viewportFraction: 0.5,
+                                        height: size.height,
+                                        enlargeCenterPage: true,
+                                        onPageChanged: (i, _) {
+                                          movieController.selectedMovies(i);
+                                        },
+                                      ),
                                       itemCount:
                                           movieController.trendingMovies.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return Container(
-                                          margin: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.amber,
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  "$posterURL${movieController.trendingMovies[index].posterURL}"),
-                                              fit: BoxFit.cover,
+                                        return InkWell(
+                                          onTap: () {
+                                            movieController.getMovieDetail(
+                                                movieController
+                                                    .selectedMovie.value.id);
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        MovieDescription()));
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: Colors.amber,
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    "$posterURL${movieController.trendingMovies[index].posterURL}"),
+                                                fit: BoxFit.cover,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
                                           ),
                                         );
                                       },
